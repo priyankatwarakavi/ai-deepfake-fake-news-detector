@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Local Portable Node
+node/
+node.zip
+
+# Python environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local Mock Database & Upload Files
+backend/data/
+backend/data/uploads/
+backend/data/reports/
+
+# Environmental variables and Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+
+# IDEs & System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

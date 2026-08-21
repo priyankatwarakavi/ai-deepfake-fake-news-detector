@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend-data:/app/data
+    environment:
+      - JWT_SECRET=super-secret-key-change-in-production-aegis-shield
+      - DATABASE_NAME=deepfake_detector
+      - MONGODB_URL=
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  backend-data:
