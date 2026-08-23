@@ -14,7 +14,7 @@ app = FastAPI(
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for prototype, restrict in production
+    allow_origins=["https://dazzling-elegance-production-1501.up.railway.app"],  # Allow all origins for prototype, restrict in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

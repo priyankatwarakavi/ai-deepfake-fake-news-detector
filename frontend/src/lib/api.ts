@@ -1,5 +1,5 @@
 // Client API wrapper for communicating with the FastAPI backend
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://dazzling-elegance-production-1501.up.railway.app/api';
 
 export function getAuthToken(): string | null {
   if (typeof window !== 'undefined') {
