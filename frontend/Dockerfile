@@ -9,7 +9,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Set environment variables for build
-ENV NEXT_PUBLIC_API_URL=http://localhost:8000/api
+ENV NEXT_PUBLIC_API_URL=https://ai-deepfake-fake-news-detector-production.up.railway.app/api
 RUN npm run build
 
 FROM node:20-alpine AS runner
