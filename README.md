@@ -323,7 +323,7 @@ Response:
   "message": "AI-Powered Deepfake and Fake News Detection System API is running successfully.",
   "version": "1.0.0"
 }
-Detection Pipeline
+###Detection Pipeline
 POST /api/detect/news Ingests text content or web urls to perform NLP classification heuristics.
 
 JSON body:
@@ -331,7 +331,7 @@ JSON body:
   "text": "SHOCKING SECRET CONSPIRACY EXPOSED! The government is hiding the miracle cure!",
   "url": "https://realnews24.com/exposed"
 }
-Input validation:
+###Input validation:
 
 text — must be non-empty if URL is not provided.
 url — must be a valid URL string structure.
@@ -389,7 +389,7 @@ curl -X POST \
   -H "Authorization: Bearer <your_jwt_token>" \
   -F "file=@face_swap_video.mp4" \
   http://localhost:8000/api/detect/deepfake
-Reports Management
+###Reports Management
 POST /api/reports/generate/{analysis_type}/{analysis_id} Generates a dynamic ReportLab PDF verification certificate for the given audit ID.
 
 Response:
@@ -408,7 +408,7 @@ verify_backend.py is a standalone testing suite for asserting all routing, auth 
 Run the test suite:
 python verify_backend.py
 The script automatically resets temporary databases, registers the admin user, mocks uploads, generates reports, and verifies dashboard calculations.
-Notes
+##Notes
 JWT Verification: Auth validation checks JWT payloads inside the request header (Authorization: Bearer <token>). Token expiry is set to 24 hours (1440 minutes).
 Database Fallback: When MongoDB Atlas connection errors are caught, the system defaults to thread-safe local JSON document read/writes inside backend/data/.
 Mock AI Rule Engine: Video frame processing is calculated via reproducible seeding based on filename checksum values to ensure consistent test results.
