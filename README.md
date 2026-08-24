@@ -92,7 +92,7 @@ This repository contains the full-stack implementation of the **Aegis.AI - AI-Po
            │
            ▼
    Downloadable PDF Report
-Project Structure
+##Project Structure
 app/
 ├── config.py              # Application settings configuration via Pydantic
 ├── database.py            # MongoDB Atlas connection with local JSON fallback
@@ -113,189 +113,29 @@ docs/                      # Documentation markdown directory
 Dockerfile                 # Container setup for FastAPI service
 docker-compose.yml         # Unified Docker service manager
 requirements.txt           # Python backend dependencies
-Getting Started
-Prerequisites
+##Getting Started
+###Prerequisites
 Python 3.10+
 Node.js v20.11+
 Docker & Docker Compose (optional)
-Local Development
-Activate the Backend Virtual Environment & Install Packages:
+###Local Development
+####Activate the Backend Virtual Environment & Install Packages:
 cd backend
 python -m venv venv
 source venv/Scripts/activate      # On Windows (PowerShell: .\venv\Scripts\Activate.ps1)
 pip install -r requirements.txt
-Verify Endpoints with Automated Testing Suite:
+####Verify Endpoints with Automated Testing Suite:
 python ../verify_backend.py
-Start the FastAPI Backend Service:
+####Start the FastAPI Backend Service:
 python -m uvicorn app.main:app --reload --port 8000
-Initialize and Start the Next.js Frontend: Open a new terminal window:
+####Initialize and Start the Next.js Frontend: Open a new terminal window:
 cd frontend
 $env:PATH = "..\node\node-v20.11.1-win-x64;" + $env:PATH
 npm install --legacy-peer-deps
 npm run dev
-Docker Compose
+###Docker Compose
 Starts both backend and frontend applications in orchestrating containers:
 docker compose up --build
-Environment Variables
-All settings live in backend/app/config.py and can be overridden via env vars or .env:
-Here is the **complete, copy-pasteable `README.md`** content with the environment variables table made concise and formatted exactly like the layout in your images:
-
-```markdown
-# Aegis.AI - AI-Powered Deepfake and Fake News Detection System
-
-This repository contains the full-stack implementation of the **Aegis.AI - AI-Powered Deepfake and Fake News Detection System**. The platform combines advanced Natural Language Processing (NLP) models for linguistic analysis and Computer Vision (CV) models for media splice diagnostics, providing a complete sandbox for factcheckers, forensics developers, and system administrators.
-
-## Features
-
-* **Multi-Modal Verification Pipeline** — Unified NLP (text/URLs) and Computer Vision (images/videos) checkers.
-* **Role-Based Access Control (RBAC)** — Secure JWT session authentication for users and administrators.
-* **Sensationalism & Clickbait Auditing** — Lexical analysis of emotional shouting ratios and vocabulary bias.
-* **Facial Splice & Blending Diagnostics** — Keyframe-by-keyframe analysis mapping visual manipulation markers.
-* **Quantization Error Checks** — Chrominance channel compression analysis to locate splice patterns.
-* **On-Demand Forensic Certificates** — Automated PDF report compilation utilizing ReportLab flowables.
-* **Global Activity Stream** — Live audit logs and daily diagnostics load dashboards for administrators.
-* **Flexible Cloud/Offline Database** — Seamless MongoDB Atlas integration with local thread-safe JSON store fallback.
-* **Containerized Infrastructure** — Modular backend and frontend deployments using Docker Compose.
-
-## Pipeline
-
-### Fake News NLP Detection Flow
-```text
-  User Input (Text / URL)
-           │
-           ▼
-┌─────────────────────────┐
-│      1. NLP Parser      │ ───► Extract capitalization & Clickbait expressions
-└─────────────────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│   2. Domain Verifier    │ ───► Cross-check domain host against credibility index
-└─────────────────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│   3. Sentiment Scorer   │ ───► Lexical emotional sentiment evaluation
-└─────────────────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│   4. Result Compiler    │ ───► Compute final Fake/Real rating and explanations
-└─────────────────────────┘
-```
-
-### Deepfake Media CV Detection Flow
-```text
-  User Ingestion (Image / Video)
-           │
-           ▼
-┌─────────────────────────┐
-│  1. Metadata Extractor  │ ───► Ingest dimensions, codecs, and file structures
-└─────────────────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│  2. Landmark Matcher    │ ───► Map facial landmark coordinates and mesh counts
-└─────────────────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│  3. Pixel Diagnostics   │ ───► Inspect boundary blending and quantization noise
-└─────────────────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│  4. Keyframe Profiler   │ ───► Calculate frame-by-frame manipulation values
-└─────────────────────────┘
-```
-
-### Report Generation Flow
-```text
-    Diagnostic Records
-           │
-           ▼
-┌─────────────────────────┐
-│   5. DB Persistence     │ ───► Write data to MongoDB or local JSON store
-└─────────────────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│  6. PDF Canvas Builder  │ ───► Build dynamic data tables and progress charts
-└─────────────────────────┘
-           │
-           ▼
-   Downloadable PDF Report
-```
-
-## Project Structure
-
-```text
-app/
-├── config.py              # Application settings configuration via Pydantic
-├── database.py            # MongoDB Atlas connection with local JSON fallback
-├── auth.py                # Password bcrypt salting and JWT role checks
-├── main.py                # FastAPI app factory, middleware, and router mounts
-├── services/
-│   ├── news_detector.py   # NLP lexical evaluation and domain audit service
-│   ├── deepfake_detector.py # CV face mesh and compression anomaly checker
-│   └── report_generator.py # PDF report certificate compilation (ReportLab)
-└── routers/
-    ├── auth.py            # Registration, login, and verification endpoints
-    ├── users.py           # Profile queries and admin role management
-    ├── detector.py        # Core NLP and media detection endpoints
-    ├── reports.py         # Report compilation and PDF file streaming
-    └── analytics.py       # Dashboard stats and administrative activity feeds
-data/                      # Local fallback directory for database and uploads
-docs/                      # Documentation markdown directory
-Dockerfile                 # Container setup for FastAPI service
-docker-compose.yml         # Unified Docker service manager
-requirements.txt           # Python backend dependencies
-```
-
-## Getting Started
-
-### Prerequisites
-
-* Python 3.10+
-* Node.js v20.11+
-* Docker & Docker Compose (optional)
-
-### Local Development
-
-1. **Activate the Backend Virtual Environment & Install Packages**:
-   ```bash
-   cd backend
-   python -m venv venv
-   source venv/Scripts/activate      # On Windows (PowerShell: .\venv\Scripts\Activate.ps1)
-   pip install -r requirements.txt
-   ```
-
-2. **Verify Endpoints with Automated Testing Suite**:
-   ```bash
-   python ../verify_backend.py
-   ```
-
-3. **Start the FastAPI Backend Service**:
-   ```bash
-   python -m uvicorn app.main:app --reload --port 8000
-   ```
-
-4. **Initialize and Start the Next.js Frontend**:
-   *Open a new terminal window:*
-   ```bash
-   cd frontend
-   $env:PATH = "..\node\node-v20.11.1-win-x64;" + $env:PATH
-   npm install --legacy-peer-deps
-   npm run dev
-   ```
-
-### Docker Compose
-
-Starts both backend and frontend applications in orchestrating containers:
-```bash
-docker compose up --build
-```
-
 ## Environment Variables
 
 All settings live in `backend/app/config.py` and can be overridden via env vars or `.env`:
