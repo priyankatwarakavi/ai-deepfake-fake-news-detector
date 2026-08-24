@@ -113,27 +113,27 @@ docs/                      # Documentation markdown directory
 Dockerfile                 # Container setup for FastAPI service
 docker-compose.yml         # Unified Docker service manager
 requirements.txt           # Python backend dependencies
-##Getting Started
-###Prerequisites
+## Getting Started
+### Prerequisites
 Python 3.10+
 Node.js v20.11+
 Docker & Docker Compose (optional)
-###Local Development
-####Activate the Backend Virtual Environment & Install Packages:
+### Local Development
+#### Activate the Backend Virtual Environment & Install Packages:
 cd backend
 python -m venv venv
 source venv/Scripts/activate      # On Windows (PowerShell: .\venv\Scripts\Activate.ps1)
 pip install -r requirements.txt
-####Verify Endpoints with Automated Testing Suite:
+#### Verify Endpoints with Automated Testing Suite:
 python ../verify_backend.py
-####Start the FastAPI Backend Service:
+#### Start the FastAPI Backend Service:
 python -m uvicorn app.main:app --reload --port 8000
-####Initialize and Start the Next.js Frontend: Open a new terminal window:
+#### Initialize and Start the Next.js Frontend: Open a new terminal window:
 cd frontend
 $env:PATH = "..\node\node-v20.11.1-win-x64;" + $env:PATH
 npm install --legacy-peer-deps
 npm run dev
-###Docker Compose
+### Docker Compose
 Starts both backend and frontend applications in orchestrating containers:
 docker compose up --build
 ## Environment Variables
@@ -163,15 +163,17 @@ Response:
   "message": "AI-Powered Deepfake and Fake News Detection System API is running successfully.",
   "version": "1.0.0"
 }
-###Detection Pipeline
+'''
+### Detection Pipeline
 POST /api/detect/news Ingests text content or web urls to perform NLP classification heuristics.
 
-JSON body:
+'''JSON body:
 {
   "text": "SHOCKING SECRET CONSPIRACY EXPOSED! The government is hiding the miracle cure!",
   "url": "https://realnews24.com/exposed"
 }
-###Input validation:
+'''
+### Input validation:
 
 text — must be non-empty if URL is not provided.
 url — must be a valid URL string structure.
@@ -229,7 +231,7 @@ curl -X POST \
   -H "Authorization: Bearer <your_jwt_token>" \
   -F "file=@face_swap_video.mp4" \
   http://localhost:8000/api/detect/deepfake
-###Reports Management
+### Reports Management
 POST /api/reports/generate/{analysis_type}/{analysis_id} Generates a dynamic ReportLab PDF verification certificate for the given audit ID.
 
 Response:
@@ -248,7 +250,7 @@ verify_backend.py is a standalone testing suite for asserting all routing, auth 
 Run the test suite:
 python verify_backend.py
 The script automatically resets temporary databases, registers the admin user, mocks uploads, generates reports, and verifies dashboard calculations.
-##Notes
+## Notes
 JWT Verification: Auth validation checks JWT payloads inside the request header (Authorization: Bearer <token>). Token expiry is set to 24 hours (1440 minutes).
 Database Fallback: When MongoDB Atlas connection errors are caught, the system defaults to thread-safe local JSON document read/writes inside backend/data/.
 Mock AI Rule Engine: Video frame processing is calculated via reproducible seeding based on filename checksum values to ensure consistent test results.
