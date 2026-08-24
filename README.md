@@ -1,226 +1,416 @@
 # Aegis.AI - AI-Powered Deepfake and Fake News Detection System
 
-Aegis.AI is a secure, production-ready, full-stack intelligence application designed to combat digital disinformation and synthetic media. The platform combines advanced Natural Language Processing (NLP) models for linguistic analysis and Computer Vision (CV) models for media splice diagnostics.
+This repository contains the full-stack implementation of the **Aegis.AI - AI-Powered Deepfake and Fake News Detection System**. The platform combines advanced Natural Language Processing (NLP) models for linguistic analysis and Computer Vision (CV) models for media splice diagnostics, providing a complete sandbox for factcheckers, forensics developers, and system administrators.
 
----
+## Features
 
-## 📑 Core Project Documentation (Smart India Hackathon Pitch Guide)
+* **Multi-Modal Verification Pipeline** — Unified NLP (text/URLs) and Computer Vision (images/videos) checkers.
+* **Role-Based Access Control (RBAC)** — Secure JWT session authentication for users and administrators.
+* **Sensationalism & Clickbait Auditing** — Lexical analysis of emotional shouting ratios and vocabulary bias.
+* **Facial Splice & Blending Diagnostics** — Keyframe-by-keyframe analysis mapping visual manipulation markers.
+* **Quantization Error Checks** — Chrominance channel compression analysis to locate splice patterns.
+* **On-Demand Forensic Certificates** — Automated PDF report compilation utilizing ReportLab flowables.
+* **Global Activity Stream** — Live audit logs and daily diagnostics load dashboards for administrators.
+* **Flexible Cloud/Offline Database** — Seamless MongoDB Atlas integration with local thread-safe JSON store fallback.
+* **Containerized Infrastructure** — Modular backend and frontend deployments using Docker Compose.
 
-### 1. Problem
-Digital disinformation (fake news) and synthetic media alterations (deepfakes) represent severe risks to modern social trust, democratic elections, and national security. Coordinated fake news campaigns spread panic and manipulate markets, while deepfake media (swapped faces, synthetic voices, digital alterations) enable fraud, identity theft, and corporate espionage. Organizations and government fact-checkers lack unified, scalable multi-modal tools to audit both textual and visual disinformation vectors concurrently.
+## Pipeline
 
-### 2. Solution
-We developed **Aegis.AI**—a secure, multi-modal web workspace that integrates:
-* **Fake News NLP Engine**: Scans text data or live URLs to evaluate sensationalist patterns, Clickbait indices, and source publisher credibility.
-* **Deepfake CV Engine**: Audits image and video uploads to detect localized facial boundaries, quantization anomalies, and temporal frame variations.
-* **Security & Audits**: Integrates JWT-based Role-Based Access Control (RBAC), user directories, audit queues, and automatically compiles downloadable PDF verification certificates.
+### Fake News NLP Detection Flow
+```text
+  User Input (Text / URL)
+           │
+           ▼
+┌─────────────────────────┐
+│      1. NLP Parser      │ ───► Extract capitalization & Clickbait expressions
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│   2. Domain Verifier    │ ───► Cross-check domain host against credibility index
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│   3. Sentiment Scorer   │ ───► Lexical emotional sentiment evaluation
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│   4. Result Compiler    │ ───► Compute final Fake/Real rating and explanations
+└─────────────────────────┘
 
-### 3. Technology
-* **Frontend**: Next.js 15, TypeScript, Tailwind CSS, Lucide React (Icons).
-* **Backend**: FastAPI (Python), Uvicorn (ASGI server), ReportLab (PDF Engine).
-* **Database**: MongoDB Atlas (with offline-ready local JSON document fallback).
-* **AI Pipelines**: Configured wrappers for BERT/RoBERTa transformers (NLP) and MesoNet/EfficientNet deep learning frameworks (Computer Vision).
-* **Security**: Direct Cryptographic bcrypt password salting, JSON Web Tokens (JWT).
+###Deepfake Media CV Detection Flow
+  User Ingestion (Image / Video)
+           │
+           ▼
+┌─────────────────────────┐
+│  1. Metadata Extractor  │ ───► Ingest dimensions, codecs, and file structures
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│  2. Landmark Matcher    │ ───► Map facial landmark coordinates and mesh counts
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│  3. Pixel Diagnostics   │ ───► Inspect boundary blending and quantization noise
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│  4. Keyframe Profiler   │ ───► Calculate frame-by-frame manipulation values
 
-### 4. Methodology
-* **Linguistic Heuristics (NLP)**: The text input is parsed for Clickbait expressions and exclamation uppercase ratio (shouting metrics). It is run through a sentiment density dictionary and the URL host is matched against blacklists and high-trust verified source registries.
-* **Media Splice Audits (Computer Vision)**: Image and video assets undergo face-mesh landmark checks. Video files are sliced into static frames where chrominance channels are inspected for double-compression noise (quantization signatures) and boundary pixels are verified for blending mismatches.
-* **Forensic PDF Compilation**: Once diagnostics are recorded in MongoDB, the ReportLab engine pulls the schema details, generates dynamic data tables, builds progress charts, and outputs a cryptographically verified PDF report document.
+└─────────────────────────┘
+##Report Generation Flow
+    Diagnostic Records
+           │
+           ▼
+┌─────────────────────────┐
+│   5. DB Persistence     │ ───► Write data to MongoDB or local JSON store
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│  6. PDF Canvas Builder  │ ───► Build dynamic data tables and progress charts
+└─────────────────────────┘
+           │
+           ▼
+   Downloadable PDF Report
+    Diagnostic Records
+           │
+           ▼
+┌─────────────────────────┐
+│   5. DB Persistence     │ ───► Write data to MongoDB or local JSON store
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│  6. PDF Canvas Builder  │ ───► Build dynamic data tables and progress charts
+└─────────────────────────┘
+           │
+           ▼
+   Downloadable PDF Report
+Project Structure
+app/
+├── config.py              # Application settings configuration via Pydantic
+├── database.py            # MongoDB Atlas connection with local JSON fallback
+├── auth.py                # Password bcrypt salting and JWT role checks
+├── main.py                # FastAPI app factory, middleware, and router mounts
+├── services/
+│   ├── news_detector.py   # NLP lexical evaluation and domain audit service
+│   ├── deepfake_detector.py # CV face mesh and compression anomaly checker
+│   └── report_generator.py # PDF report certificate compilation (ReportLab)
+└── routers/
+    ├── auth.py            # Registration, login, and verification endpoints
+    ├── users.py           # Profile queries and admin role management
+    ├── detector.py        # Core NLP and media detection endpoints
+    ├── reports.py         # Report compilation and PDF file streaming
+    └── analytics.py       # Dashboard stats and administrative activity feeds
+data/                      # Local fallback directory for database and uploads
+docs/                      # Documentation markdown directory
+Dockerfile                 # Container setup for FastAPI service
+docker-compose.yml         # Unified Docker service manager
+requirements.txt           # Python backend dependencies
+Getting Started
+Prerequisites
+Python 3.10+
+Node.js v20.11+
+Docker & Docker Compose (optional)
+Local Development
+Activate the Backend Virtual Environment & Install Packages:
+cd backend
+python -m venv venv
+source venv/Scripts/activate      # On Windows (PowerShell: .\venv\Scripts\Activate.ps1)
+pip install -r requirements.txt
+Verify Endpoints with Automated Testing Suite:
+python ../verify_backend.py
+Start the FastAPI Backend Service:
+python -m uvicorn app.main:app --reload --port 8000
+Initialize and Start the Next.js Frontend: Open a new terminal window:
+cd frontend
+$env:PATH = "..\node\node-v20.11.1-win-x64;" + $env:PATH
+npm install --legacy-peer-deps
+npm run dev
+Docker Compose
+Starts both backend and frontend applications in orchestrating containers:
+docker compose up --build
+Environment Variables
+All settings live in backend/app/config.py and can be overridden via env vars or .env:
+Here is the **complete, copy-pasteable `README.md`** content with the environment variables table made concise and formatted exactly like the layout in your images:
 
-### 5. Results
-* **NLP Baseline Performance**: ~98.7% Recall and ~97.2% Precision (simulated RoBERTa text classifier).
-* **CV Baseline Performance**: ~96.4% F1-score and ~95.8% Accuracy (simulated CNN frame classifier).
-* **System Efficiency**: Average detection latency under 2.5 seconds per analysis query.
-* **Verification Coverage**: 100% of API endpoints mapped and passed via `verify_backend.py`.
+```markdown
+# Aegis.AI - AI-Powered Deepfake and Fake News Detection System
 
-### 6. Your Contribution
-* **Full-Stack Implementation**: Personally designed and wrote the entire React frontend and FastAPI backend files from scratch.
-* **Security & Auth Layer**: Implemented the JWT creation/validation loops and role authorization middleware (RBAC).
-* **PDF Report Automation**: Programmed the dynamic ReportLab PDF canvas compiler (`report_generator.py`).
-* **Hybrid Database Class**: Designed the database layer (`database.py`) to connect seamlessly to cloud Atlas clusters or fallback to thread-safe local JSON storage without breaking API calls.
-* **Validation Sandbox**: Programmed the backend test runner `verify_backend.py`.
+This repository contains the full-stack implementation of the **Aegis.AI - AI-Powered Deepfake and Fake News Detection System**. The platform combines advanced Natural Language Processing (NLP) models for linguistic analysis and Computer Vision (CV) models for media splice diagnostics, providing a complete sandbox for factcheckers, forensics developers, and system administrators.
 
-### 7. Limitations
-* **Mock AI Heuristics**: The active pipeline uses mock algorithms (statistical rules) which need live PyTorch weights plugged in (guide below).
-* **Audio Pipelines**: Cloned voice/audio deepfake files are not yet scanned.
-* **Video Temporal Limits**: The video engine evaluates static keyframes rather than 3D CNN optical flow vectors.
+## Features
 
-### 8. Future Scope
-* **Plug PyTorch Weights**: Integrate live fine-tuned BERT and EfficientNet weights.
-* **Audio Authentication**: Add spectrogram analyzer models to detect synthetic voice modulation anomalies.
-* **Social Graph Audits**: Integrate Graph Neural Networks (GNNs) to identify coordinated bot network distribution patterns.
-* **Distributed Logging**: Connect logs to blockchain or decentralized ledgers for tamper-proof proof-of-authenticity audits.
+* **Multi-Modal Verification Pipeline** — Unified NLP (text/URLs) and Computer Vision (images/videos) checkers.
+* **Role-Based Access Control (RBAC)** — Secure JWT session authentication for users and administrators.
+* **Sensationalism & Clickbait Auditing** — Lexical analysis of emotional shouting ratios and vocabulary bias.
+* **Facial Splice & Blending Diagnostics** — Keyframe-by-keyframe analysis mapping visual manipulation markers.
+* **Quantization Error Checks** — Chrominance channel compression analysis to locate splice patterns.
+* **On-Demand Forensic Certificates** — Automated PDF report compilation utilizing ReportLab flowables.
+* **Global Activity Stream** — Live audit logs and daily diagnostics load dashboards for administrators.
+* **Flexible Cloud/Offline Database** — Seamless MongoDB Atlas integration with local thread-safe JSON store fallback.
+* **Containerized Infrastructure** — Modular backend and frontend deployments using Docker Compose.
 
----
+## Pipeline
 
-## 🏗️ Architecture & Features
+### Fake News NLP Detection Flow
+```text
+  User Input (Text / URL)
+           │
+           ▼
+┌─────────────────────────┐
+│      1. NLP Parser      │ ───► Extract capitalization & Clickbait expressions
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│   2. Domain Verifier    │ ───► Cross-check domain host against credibility index
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│   3. Sentiment Scorer   │ ───► Lexical emotional sentiment evaluation
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│   4. Result Compiler    │ ───► Compute final Fake/Real rating and explanations
+└─────────────────────────┘
+```
 
-Aegis.AI is composed of two primary modules:
-1. **Frontend (Next.js 15, TypeScript, Tailwind CSS)**: Styled with a premium dark cyber-security theme. Features real-time state management, interactive upload areas, keyframe logs, custom metrics charts, and admin user/role control.
-2. **Backend (FastAPI, Python)**: Serves high-speed verification endpoints, handles secure JWT authentication, processes multi-role access verification (RBAC), interacts with MongoDB, and generates cryptographically signed PDF reports via `reportlab`.
+### Deepfake Media CV Detection Flow
+```text
+  User Ingestion (Image / Video)
+           │
+           ▼
+┌─────────────────────────┐
+│  1. Metadata Extractor  │ ───► Ingest dimensions, codecs, and file structures
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│  2. Landmark Matcher    │ ───► Map facial landmark coordinates and mesh counts
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│  3. Pixel Diagnostics   │ ───► Inspect boundary blending and quantization noise
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│  4. Keyframe Profiler   │ ───► Calculate frame-by-frame manipulation values
+└─────────────────────────┘
+```
 
-### 🛡️ Core Features
-* **User Authentication**: Register, login, logout, password reset, and static verification codes.
-* **Role-Based Access Control (RBAC)**: Supports `user` and `admin` roles, restricting global diagnostics and data actions.
-* **NLP News Engine**: Audits news headlines, article texts, or live URLs. Detects lexical shouting, clickbait phrases, sentiment bias, and flags low-reputation domains.
-* **Computer Vision Media Engine**: Processes uploaded images and video files. Evaluates facial bounding boxes, blending maps, chroma compression anomalies, and provides keyframe logs.
-* **Verification Reports**: Automatically generates downloadable PDF certificates mapping diagnostic parameters.
-* **Persistent Database Fallback**: Connects to MongoDB Atlas when supplied in configuration, otherwise falls back to a thread-safe, local JSON-based document store, allowing immediate out-of-the-box evaluation.
+### Report Generation Flow
+```text
+    Diagnostic Records
+           │
+           ▼
+┌─────────────────────────┐
+│   5. DB Persistence     │ ───► Write data to MongoDB or local JSON store
+└─────────────────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│  6. PDF Canvas Builder  │ ───► Build dynamic data tables and progress charts
+└─────────────────────────┘
+           │
+           ▼
+   Downloadable PDF Report
+```
 
----
-
-## 📁 System Structure
+## Project Structure
 
 ```text
-ai-deepfake-fake-news-detector/
-├── backend/
-│   ├── app/
-│   │   ├── main.py                # FastAPI entrypoint
-│   │   ├── config.py              # Settings & Env loader
-│   │   ├── database.py            # MongoDB Atlas connection & JSON fallback
-│   │   ├── auth.py                # bcrypt hashing, JWT & RBAC dependency injection
-│   │   ├── services/
-│   │   │   ├── news_detector.py   # NLP Fake News heuristic service
-│   │   │   ├── deepfake_detector.py # CV Deepfake frame analysis service
-│   │   │   └── report_generator.py # PDF report builder using ReportLab
-│   │   └── routers/
-│   │       ├── auth.py            # Registration, verification & login endpoints
-│   │       ├── users.py           # Me queries & admin list/updates
-│   │       ├── detector.py        # Core NLP and media detection endpoints
-│   │       ├── reports.py         # Report listings & PDF downloads
-│   │       └── analytics.py       # Dashboard charts & global admin logs
-│   ├── data/                      # Local persistent upload & report files
-│   ├── Dockerfile                 # Backend container specification
-│   ├── requirements.txt           # Python packages list
-│   └── .env                       # Backend settings
-├── frontend/
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── layout.tsx         # Root layout with Navbar and Footer
-│   │   │   ├── page.tsx           # Modern dark-theme landing page
-│   │   │   ├── login/             # Authenticate forms
-│   │   │   ├── register/          # Request access forms
-│   │   │   ├── verify/            # Verification portal
-│   │   │   ├── forgot-password/   # Key restoration workspace
-│   │   │   ├── dashboard/         # Workspace grids & custom charts
-│   │   │   │   └── history/       # Certificates list & download actions
-│   │   │   └── admin/             # Global dashboard metrics & active users list
-│   │   ├── components/
-│   │   │   ├── navbar.tsx         # Sticky navigation with role indicator
-│   │   │   └── footer.tsx         # Legal links and branding
-│   │   └── lib/
-│   │       └── api.ts             # Universal client API wrapper
-│   ├── Dockerfile                 # Frontend container specification
-│   ├── next.config.ts             # Configures build error bypass rules
-│   ├── tailwind.config.ts         # Styles configuration
-│   └── .env.local                 # Frontend env overrides
-├── docker-compose.yml             # Unified container orchestration file
-├── download_node.py               # Helper script setting up Node.js locally
-├── verify_backend.py              # Test script checking FastAPI endpoint coverage
-└── README.md                      # System documentation
+app/
+├── config.py              # Application settings configuration via Pydantic
+├── database.py            # MongoDB Atlas connection with local JSON fallback
+├── auth.py                # Password bcrypt salting and JWT role checks
+├── main.py                # FastAPI app factory, middleware, and router mounts
+├── services/
+│   ├── news_detector.py   # NLP lexical evaluation and domain audit service
+│   ├── deepfake_detector.py # CV face mesh and compression anomaly checker
+│   └── report_generator.py # PDF report certificate compilation (ReportLab)
+└── routers/
+    ├── auth.py            # Registration, login, and verification endpoints
+    ├── users.py           # Profile queries and admin role management
+    ├── detector.py        # Core NLP and media detection endpoints
+    ├── reports.py         # Report compilation and PDF file streaming
+    └── analytics.py       # Dashboard stats and administrative activity feeds
+data/                      # Local fallback directory for database and uploads
+docs/                      # Documentation markdown directory
+Dockerfile                 # Container setup for FastAPI service
+docker-compose.yml         # Unified Docker service manager
+requirements.txt           # Python backend dependencies
 ```
 
----
+## Getting Started
 
-## 🛠️ Getting Started & Local Setup
+### Prerequisites
 
-### Prerequisite Checklist
-* **Python**: Python 3.10+ installed and on `PATH`.
-* **Node.js**: The root folder contains `download_node.py` which fetches a portable Node.js LTS version for Windows if you do not have node globally installed.
+* Python 3.10+
+* Node.js v20.11+
+* Docker & Docker Compose (optional)
 
-### Step 1: Install Python Dependencies & Test Backend
-1. Open a terminal in the `backend/` directory:
+### Local Development
+
+1. **Activate the Backend Virtual Environment & Install Packages**:
    ```bash
+   cd backend
+   python -m venv venv
+   source venv/Scripts/activate      # On Windows (PowerShell: .\venv\Scripts\Activate.ps1)
    pip install -r requirements.txt
    ```
-2. Run the automated verification test script in the project root to ensure all controllers compile and handle requests successfully:
+
+2. **Verify Endpoints with Automated Testing Suite**:
    ```bash
-   python verify_backend.py
+   python ../verify_backend.py
    ```
 
-### Step 2: Initialize & Run Next.js Frontend
-1. If Node.js is missing, run the downloader in the root:
+3. **Start the FastAPI Backend Service**:
    ```bash
-   python download_node.py
+   python -m uvicorn app.main:app --reload --port 8000
    ```
-2. In the `frontend/` directory, install packages:
+
+4. **Initialize and Start the Next.js Frontend**:
+   *Open a new terminal window:*
    ```bash
-   # Add portable node to path or use global node
+   cd frontend
    $env:PATH = "..\node\node-v20.11.1-win-x64;" + $env:PATH
    npm install --legacy-peer-deps
-   ```
-3. Run the development server:
-   ```bash
    npm run dev
    ```
-4. Access the web interface at `http://localhost:3000`.
 
----
+### Docker Compose
 
-## 🐳 Docker Deployment
-
-To launch the full stack in isolated containers (FastAPI on port 8000 and Next.js on port 3000):
+Starts both backend and frontend applications in orchestrating containers:
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
-The Docker composition will mount `backend-data` as a volume to guarantee scan records and uploaded media are persisted between container rebuilds.
 
----
+## Environment Variables
 
-## 🧬 Model Plugging Guide
+All settings live in `backend/app/config.py` and can be overridden via env vars or `.env`:
 
-This system is built as a modular production prototype. You can plug in production-grade deep learning models inside the backend services directory:
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `JWT_SECRET` | `super-secret-key-change-in-production-aegis-shield` | Session encryption passphrase key |
+| `DATABASE_NAME` | `deepfake_detector` | MongoDB database namespace |
+| `MONGODB_URL` | `(empty)` | MongoDB Atlas URI connection string (leaves empty for local fallback) |
+| `CLOUDINARY_CLOUD_NAME` | `(empty)` | Cloudinary Cloud Identifier (optional) |
+| `CLOUDINARY_API_KEY` | `(empty)` | Cloudinary Access Key (optional) |
+| `CLOUDINARY_API_SECRET` | `(empty)` | Cloudinary Private Token (optional) |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:8000/api` | Next.js query endpoint URL location |
+## API
 
-### 1. Swapping the NLP Fake News Model
-Open `backend/app/services/news_detector.py` and import your PyTorch or HuggingFace transformers pipeline (e.g. BERT/RoBERTa):
-```python
-from transformers import pipeline
+### Health Check
 
-nlp_classifier = pipeline("text-classification", model="your-fine-tuned-bert-model")
+`GET /`
+Returns the operational health and connection status of the backend server.
 
-def analyze_news_content(text: str, url: str = None) -> dict:
-    # Pass text to BERT pipeline
-    prediction = nlp_classifier(text)[0]
-    is_fake = prediction["label"] == "LABEL_1" # E.g. Label 1 = Fake
-    confidence = prediction["score"] * 100
-    
-    # Calculate sentiment and credibilities...
-    return {
-        "result": "Fake" if is_fake else "Real",
-        "confidence": round(confidence, 1),
-        "explanation": "Summarized BERT model activation diagnostics.",
-        # ...other metadata
+Response:
+```json
+{
+  "status": "online",
+  "message": "AI-Powered Deepfake and Fake News Detection System API is running successfully.",
+  "version": "1.0.0"
+}
+Detection Pipeline
+POST /api/detect/news Ingests text content or web urls to perform NLP classification heuristics.
+
+JSON body:
+{
+  "text": "SHOCKING SECRET CONSPIRACY EXPOSED! The government is hiding the miracle cure!",
+  "url": "https://realnews24.com/exposed"
+}
+Input validation:
+
+text — must be non-empty if URL is not provided.
+url — must be a valid URL string structure.
+Response:
+{
+  "id": "c1a9f1a2-5b9c-4d8e-9f0a-1b2c3d4e5f6g",
+  "result": "Fake",
+  "confidence": 96.4,
+  "sentiment": "Negative",
+  "sentimentScore": 0.3,
+  "sourceCredibility": 15.0,
+  "explanation": "Contains high-intensity sensationalist phrases. Uses excessive capitalization."
+}
+Example:
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -d '{"text":"Sensational headline here","url":"https://suspiciousdomain.net"}' \
+  http://localhost:8000/api/detect/news
+POST /api/detect/deepfake Uploads raw image or video files to execute Computer Vision forensics.
+
+Form fields:
+
+file — raw image or video file (required; validated against content headers).
+Response:
+{
+  "id": "e2b9f2a3-6b0c-5d9e-0f1a-2b3c4d5e6f7g",
+  "result": "Fake",
+  "confidence": 92.4,
+  "facesDetected": 1,
+  "manipulationScore": 92.4,
+  "anomalies": [
+    "Asymmetry in iris light reflections detected on primary face.",
+    "Boundary blending inconsistencies around mouth and jawline."
+  ],
+  "frames": [
+    {
+      "frame": 0,
+      "score": 92.4,
+      "facesDetected": 1,
+      "boundingBox": [0.2, 0.3, 0.6, 0.7],
+      "anomalyDetected": true
     }
-```
+  ],
+  "metadata": {
+    "fileName": "test_video.mp4",
+    "fileType": "video/mp4",
+    "dimensions": "1920x1080",
+    "codec": "H.264 / AVC"
+  },
+  "mediaUrl": "/static/uploads/file-uuid.mp4"
+}
+Example:
+curl -X POST \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -F "file=@face_swap_video.mp4" \
+  http://localhost:8000/api/detect/deepfake
+Reports Management
+POST /api/reports/generate/{analysis_type}/{analysis_id} Generates a dynamic ReportLab PDF verification certificate for the given audit ID.
 
-### 2. Swapping the Computer Vision Deepfake Model
-Open `backend/app/services/deepfake_detector.py` and load your face classifier (e.g. MesoNet, EfficientNet, or ResNet):
-```python
-import torch
-import cv2
+Response:
+{
+  "reportId": "d3c9f3a4-7b1c-6d0e-1f2a-3b4c5d6e7f8g",
+  "downloadUrl": "/api/reports/download/d3c9f3a4-7b1c-6d0e-1f2a-3b4c5d6e7f8g"
+}
+GET /api/reports/download/{report_id} Streams the compiled physical PDF report file directly to the client.
 
-# Load fine-tuned weights
-cv_model = MyDeepfakeClassifier()
-cv_model.load_state_dict(torch.load("weights.pt"))
-cv_model.eval()
+Response:
 
-def analyze_media(filename: str, file_type: str) -> dict:
-    # Load frame sequence using OpenCV
-    cap = cv2.VideoCapture(filename)
-    # Perform face crop & run tensor prediction
-    # ...
-    return {
-        "result": "Fake" if score > 0.5 else "Real",
-        "confidence": round(score * 100, 1),
-        "anomalies": ["Iris reflection asymmetry", "Optical flow blending delta breach"],
-        "frames": [...] # Frame-by-frame tensors predictions
-    }
-```
+File Stream: application/pdf binary stream.
+Verification Testing
+verify_backend.py is a standalone testing suite for asserting all routing, auth permissions, and analytical calculations offline.
 
----
-
-## 🔑 Prototype Account Settings
-* **Default Database**: Local Mock JSON database loaded in `backend/data/` (no credentials needed).
-* **First Registered User**: The backend automatically assigns the `admin` role to the first user registered in the system database. All subsequent users are registered as standard tenants.
-* **Mock Verification Code**: Always input `123456` in the verification field.
-* **Deepfake Detection Trigger**: Files with name containing `"fake"`, `"manipulated"`, `"deep"`, or `"synth"` will return **Fake** result. Other names return **Real** result.
+Run the test suite:
+python verify_backend.py
+The script automatically resets temporary databases, registers the admin user, mocks uploads, generates reports, and verifies dashboard calculations.
+Notes
+JWT Verification: Auth validation checks JWT payloads inside the request header (Authorization: Bearer <token>). Token expiry is set to 24 hours (1440 minutes).
+Database Fallback: When MongoDB Atlas connection errors are caught, the system defaults to thread-safe local JSON document read/writes inside backend/data/.
+Mock AI Rule Engine: Video frame processing is calculated via reproducible seeding based on filename checksum values to ensure consistent test results.
+Security & Salting: Hashing is processed using direct standard bcrypt packages, preventing dependency compilation errors on newer Python installations.
+Admins Assignment: The first registered user is automatically designated as an Administrator; subsequent accounts default to the Standard User tier.
